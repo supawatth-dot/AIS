@@ -1,0 +1,8 @@
+{
+  "name": "Telecom and Mobile Asset Manager",
+  "description": "Telecom, mobile asset, SIM card, and AIS service contract management system for employees and organizations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

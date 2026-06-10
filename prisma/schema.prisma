@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Employee {
+  id          String              @id // e.g. EMP-1001
+  name        String
+  department  String
+  email       String
+  isDeleted   Boolean             @default(false)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  assignments AssignmentHistory[]
+}
+
+model Asset {
+  id             String              @id // e.g. AST-0001
+  name           String
+  brand          String
+  model          String
+  serialNumber   String
+  imei           String
+  purchaseDate   String // ISO date
+  purchasePrice  Float
+  warrantyExpiry String // ISO date
+  assetType      String // e.g. "Company Asset", "Contract Device"
+  status         String // e.g. "Active", "Spare", "Repair", "Lost", "Retired"
+  notes          String
+  qrCode         String              @default("")
+  isDeleted      Boolean             @default(false)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  assignments    AssignmentHistory[]
+  simContract    SIMContract?
+  documents      SystemDocument[]
+}
+
+model SIMContract {
+  phoneNumber       String          @id // e.g., "0812345678"
+  carrier           String          @default("AIS")
+  contractNumber    String
+  packageName       String
+  monthlyCost       Float
+  contractStartDate String // ISO date
+  contractEndDate   String // ISO date
+  contractStatus    String          @default("Active") // e.g. "Active", "Expired", "Terminated"
+  aisAccountName    String
+  linkedAssetId     String?         @unique
+  asset             Asset?          @relation(fields: [linkedAssetId], references: [id])
+  attachedDocId     String?         @unique
+  document          SystemDocument? @relation("ContractDoc", fields: [attachedDocId], references: [id])
+  isDeleted         Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model AssignmentHistory {
+  id             String    @id
+  employeeId     String
+  employeeName   String
+  assetId        String
+  assetName      String
+  phoneNumber    String?
+  assignmentDate String // ISO date
+  returnDate     String? // ISO date
+  status         String // "Active", "Returned", "Transferred"
+  notes          String
+  employee       Employee  @relation(fields: [employeeId], references: [id])
+  asset          Asset     @relation(fields: [assetId], references: [id])
+  createdAt      DateTime  @default(now())
+}
+
+model SystemDocument {
+  id          String       @id
+  name        String
+  fileName    String
+  fileType    String // "Contract", "Invoice", "Device Photo", "Handover Form", "Warranty File", "Other"
+  mimeType    String
+  filePath    String
+  uploadedAt  DateTime     @default(now())
+  fileSize    Int
+  linkedType  String // "asset", "contract", "general"
+  linkedId    String?
+  assetId     String?
+  asset       Asset?       @relation(fields: [assetId], references: [id])
+  simContract SIMContract? @relation("ContractDoc")
+}
+
+model ActivityLog {
+  id        String   @id
+  timestamp DateTime @default(now())
+  action    String
+  details   String
+  user      String   @default("admin")
+}
