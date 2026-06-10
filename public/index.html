@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIS — Telecom & Mobile Asset Management</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ── AUTH SCREEN ── -->
+<div id="auth-screen" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <h1>📱 AIS</h1>
+      <p>Telecom & Mobile Asset Management</p>
+    </div>
+
+    <div id="login-error" class="alert alert-error" style="display:none"></div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="login-email" class="form-control" placeholder="admin@ais.local" value="admin@ais.local" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-control" placeholder="••••••••" value="Admin@123" required>
+      </div>
+      <button type="submit" id="login-btn" class="btn btn-primary" style="width:100%;padding:12px;font-size:15px">
+        Sign In
+      </button>
+    </form>
+
+    <p style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted)">
+      Default: admin@ais.local / Admin@123
+    </p>
+  </div>
+</div>
+
+<!-- ── APP SCREEN ── -->
+<div id="app-screen" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">📱 <span>AIS</span></div>
+      <div class="sidebar-tagline">Asset Management System</div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <!-- rendered by app.js -->
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div>
+          <div class="user-name" id="user-name">Admin</div>
+          <div class="user-role" id="user-role">superadmin</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="App.logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header class="topbar">
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <div class="topbar-actions">
+        <span class="text-muted text-sm" id="current-date"></span>
+      </div>
+    </header>
+
+    <main class="content-area" id="content-area">
+      <!-- rendered by router -->
+    </main>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- html5-qrcode -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+<!-- App Scripts -->
+<script src="/js/app.js"></script>
+<script src="/js/dashboard.js"></script>
+<script src="/js/assets.js"></script>
+<script src="/js/employees.js"></script>
+<script src="/js/contracts.js"></script>
+<script src="/js/auditLogs.js"></script>
+<script src="/js/import.js"></script>
+<script src="/js/scanner.js"></script>
+<script src="/js/users.js"></script>
+
+<script>
+  // Set current date in topbar
+  document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-GB', {
+    weekday: 'short', day: '2-digit', month: 'short', year: 'numeric'
+  });
+</script>
+
+</body>
+</html>
