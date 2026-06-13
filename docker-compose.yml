@@ -1,46 +1,35 @@
 version: '3.9'
 
+# Development compose — uses SQLite, no nginx
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: 3000
-      DB_DIALECT: postgres
-      DATABASE_URL: postgresql://ais_user:ais_password@postgres:5432/ais_db
-      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-32chars-minimum}
+      DB_DIALECT: sqlite
+      DATABASE_URL: sqlite:./database.sqlite
+      JWT_SECRET: ${JWT_SECRET:-dev-jwt-secret-change-in-production}
       JWT_EXPIRES_IN: 7d
-      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASS: ${SMTP_PASS:-}
-      SMTP_FROM: ${SMTP_FROM:-AIS System <noreply@ais.local>}
-      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
+      SMTP_FROM: ${SMTP_FROM:-AIS Dev <noreply@localhost>}
+      FRONTEND_URL: http://localhost:3000
+      LOG_LEVEL: debug
     volumes:
       - ./uploads:/app/uploads
-
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: ais_db
-      POSTGRES_USER: ais_user
-      POSTGRES_PASSWORD: ais_password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ais_user -d ais_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - ./logs:/app/logs
+      - ./database.sqlite:/app/database.sqlite
     restart: unless-stopped
-
-volumes:
-  postgres_data:
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
