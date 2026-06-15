@@ -6,7 +6,7 @@ import { DBManager } from './server/db';
 import { Asset, SIMContract, Employee } from './src/types';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Set up JSON parsing limits to allow base64 uploads easily
 app.use(express.json({ limit: '32mb' }));
