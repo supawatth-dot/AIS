@@ -53,10 +53,10 @@ async function main() {
 
   // 2. Seed Assets
   const asset1 = await prisma.asset.upsert({
-    where: { id: 'AST-0001' },
+    where: { id: 'BKK-PH-0001' },
     update: {},
     create: {
-      id: 'AST-0001',
+      id: 'BKK-PH-0001',
       name: 'iPhone 15 Pro Max',
       brand: 'Apple',
       model: 'A3106 (256GB, Blue Titanium)',
@@ -73,10 +73,10 @@ async function main() {
   });
 
   const asset2 = await prisma.asset.upsert({
-    where: { id: 'AST-0002' },
+    where: { id: 'BKK-PH-0002' },
     update: {},
     create: {
-      id: 'AST-0002',
+      id: 'BKK-PH-0002',
       name: 'Samsung Galaxy S24 Ultra',
       brand: 'Samsung',
       model: 'SM-S928B/DS (512GB, Titanium Gray)',
@@ -93,10 +93,10 @@ async function main() {
   });
 
   const asset3 = await prisma.asset.upsert({
-    where: { id: 'AST-0003' },
+    where: { id: 'BKK-PH-0003' },
     update: {},
     create: {
-      id: 'AST-0003',
+      id: 'BKK-PH-0003',
       name: 'iPad Air 5 (Cellular)',
       brand: 'Apple',
       model: 'A2589 (64GB, Space Gray)',
@@ -126,7 +126,7 @@ async function main() {
       contractEndDate: offsetDate(65),
       contractStatus: 'Active',
       aisAccountName: 'บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด',
-      linkedAssetId: 'AST-0001'
+      linkedAssetId: 'BKK-PH-0001'
     }
   });
 
@@ -143,7 +143,7 @@ async function main() {
       contractEndDate: offsetDate(245),
       contractStatus: 'Active',
       aisAccountName: 'บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด',
-      linkedAssetId: 'AST-0002'
+      linkedAssetId: 'BKK-PH-0002'
     }
   });
 
@@ -155,7 +155,7 @@ async function main() {
       id: 'HIS-0001',
       employeeId: 'EMP-1001',
       employeeName: 'สมชาย รักดี',
-      assetId: 'AST-0001',
+      assetId: 'BKK-PH-0001',
       assetName: 'iPhone 15 Pro Max',
       phoneNumber: '0819238475',
       assignmentDate: offsetDate(-300),

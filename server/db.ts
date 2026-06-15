@@ -39,7 +39,7 @@ function getInitialSeedData(): DBState {
 
   const assets: Asset[] = [
     {
-      id: 'AST-0001',
+      id: 'BKK-PH-0001',
       name: 'iPhone 15 Pro Max',
       brand: 'Apple',
       model: 'A3106 (256GB, Blue Titanium)',
@@ -55,7 +55,7 @@ function getInitialSeedData(): DBState {
       isDeleted: false
     },
     {
-      id: 'AST-0002',
+      id: 'BKK-PH-0002',
       name: 'Samsung Galaxy S24 Ultra',
       brand: 'Samsung',
       model: 'SM-S928B/DS (512GB, Titanium Gray)',
@@ -71,7 +71,7 @@ function getInitialSeedData(): DBState {
       isDeleted: false
     },
     {
-      id: 'AST-0003',
+      id: 'BKK-PH-0003',
       name: 'iPad Air 5 (Cellular)',
       brand: 'Apple',
       model: 'A2589 (64GB, Space Gray)',
@@ -87,7 +87,7 @@ function getInitialSeedData(): DBState {
       isDeleted: false
     },
     {
-      id: 'AST-0004',
+      id: 'BKK-PH-0004',
       name: 'AIS Super 4G Pocket WiFi',
       brand: 'ZTE',
       model: 'MF971R',
@@ -103,7 +103,7 @@ function getInitialSeedData(): DBState {
       isDeleted: false
     },
     {
-      id: 'AST-0005',
+      id: 'BKK-PH-0005',
       name: 'Samsung Galaxy A55 5G',
       brand: 'Samsung',
       model: 'SM-A556B (128GB, Awesome Lilac)',
@@ -119,7 +119,7 @@ function getInitialSeedData(): DBState {
       isDeleted: false
     },
     {
-      id: 'AST-0006',
+      id: 'BKK-PH-0006',
       name: 'iPhone 13',
       brand: 'Apple',
       model: 'A2633 (128GB, Midnight)',
@@ -147,7 +147,7 @@ function getInitialSeedData(): DBState {
       contractEndDate: offsetDate(65), // expiring in 65 days (danger close)
       contractStatus: 'Active',
       aisAccountName: 'บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด',
-      linkedAssetId: 'AST-0001',
+      linkedAssetId: 'BKK-PH-0001',
       attachedDocId: 'DOC-0001',
       isDeleted: false
     },
@@ -161,7 +161,7 @@ function getInitialSeedData(): DBState {
       contractEndDate: offsetDate(245),
       contractStatus: 'Active',
       aisAccountName: 'บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด',
-      linkedAssetId: 'AST-0002',
+      linkedAssetId: 'BKK-PH-0002',
       attachedDocId: null,
       isDeleted: false
     },
@@ -175,7 +175,7 @@ function getInitialSeedData(): DBState {
       contractEndDate: offsetDate(-20), // contract expired!
       contractStatus: 'Expired',
       aisAccountName: 'บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด',
-      linkedAssetId: 'AST-0004',
+      linkedAssetId: 'BKK-PH-0004',
       attachedDocId: 'DOC-0002',
       isDeleted: false
     },
@@ -231,7 +231,7 @@ function getInitialSeedData(): DBState {
       id: 'HIS-0001',
       employeeId: 'EMP-1001',
       employeeName: 'สมชาย รักดี',
-      assetId: 'AST-0001',
+      assetId: 'BKK-PH-0001',
       assetName: 'iPhone 15 Pro Max',
       phoneNumber: '0819238475',
       assignmentDate: offsetDate(-300),
@@ -243,7 +243,7 @@ function getInitialSeedData(): DBState {
       id: 'HIS-0002',
       employeeId: 'EMP-1002',
       employeeName: 'วิภาดา รวยเจริญ',
-      assetId: 'AST-0002',
+      assetId: 'BKK-PH-0002',
       assetName: 'Samsung Galaxy S24 Ultra',
       phoneNumber: '0891234567',
       assignmentDate: offsetDate(-120),
@@ -255,7 +255,7 @@ function getInitialSeedData(): DBState {
       id: 'HIS-0003',
       employeeId: 'EMP-1003',
       employeeName: 'ธีรเดช เอื้ออังกูร',
-      assetId: 'AST-0003',
+      assetId: 'BKK-PH-0003',
       assetName: 'iPad Air 5 (Cellular)',
       phoneNumber: null,
       assignmentDate: offsetDate(-450),
@@ -267,7 +267,7 @@ function getInitialSeedData(): DBState {
       id: 'HIS-0004',
       employeeId: 'EMP-1003',
       employeeName: 'ธีรเดช เอื้ออังกูร',
-      assetId: 'AST-0004',
+      assetId: 'BKK-PH-0004',
       assetName: 'AIS Super 4G Pocket WiFi',
       phoneNumber: '0937482910',
       assignmentDate: offsetDate(-200),
@@ -300,7 +300,7 @@ function getInitialSeedData(): DBState {
       uploadedAt: offsetDate(-200),
       fileSize: 450000,
       linkedType: 'asset',
-      linkedId: 'AST-0004'
+      linkedId: 'BKK-PH-0004'
     }
   ];
 

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  LayoutDashboard, Smartphone, FileText, UserCheck, Users, FolderOpen, 
-  Settings, LogOut, Bell, Search, RefreshCw, Key, Shield, User, Clock, 
-  HelpCircle, Sparkles, X, ChevronRight, CheckCircle, Database 
+import {
+  LayoutDashboard, Smartphone, FileText, UserCheck, Users, FolderOpen,
+  Settings, LogOut, Bell, Search, RefreshCw, Key, Shield, User, Clock,
+  HelpCircle, Sparkles, X, ChevronRight, CheckCircle, Database, LogIn,
+  Repeat, BellRing, CheckCheck
 } from 'lucide-react';
 import { ApiService } from './utils/api';
+import { useLanguage } from './utils/i18n';
+import { Globe } from 'lucide-react';
 import { 
   Asset, SIMContract, Employee, AssignmentHistory, 
   SystemDocument, ActivityLog, SystemNotification, DashboardStats 
@@ -22,7 +25,9 @@ import ActivityLogsView from './components/ActivityLogsView';
 type AppTab = 'Dashboard' | 'Assets' | 'Contracts' | 'Assignments' | 'Employees' | 'Documents' | 'Logs';
 
 export default function App() {
-  
+
+  const { t, lang, toggleLang } = useLanguage();
+
   // Tab Navigation State
   const [activeTab, setActiveTab] = useState<AppTab>('Dashboard');
   const [currentUser, setCurrentUser] = useState<{ username: string; role: 'admin' | 'user' } | null>({ username: 'admin', role: 'admin' });
@@ -286,10 +291,22 @@ export default function App() {
               <div className="p-3 bg-emerald-50 rounded-2xl text-brand-primary">
                 <Database size={36} />
               </div>
-              <h2 className="text-xl font-bold text-gray-900">เข้าสู่ระบบการจัดการทรัพย์สิน AIS</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t('login.title')}</h2>
               <p className="text-xs text-gray-400">
-                กรุณาระบุรหัสผู้ทดสอบเพื่อเข้าสังเกตการณ์ระบบหลังบ้านสมาร์ทคลัง
+                {t('login.subtitle')}
               </p>
+            </div>
+
+            {/* Language toggle on login */}
+            <div className="flex justify-center mb-4">
+              <button
+                type="button"
+                onClick={toggleLang}
+                className="flex items-center gap-1.5 px-3 py-1 border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-50 cursor-pointer"
+              >
+                <Globe size={13} />
+                <span>{lang === 'th' ? 'EN' : 'ไทย'}</span>
+              </button>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -300,37 +317,44 @@ export default function App() {
               )}
 
               <div>
-                <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">ชื่อผู้ใช้งาน</label>
-                <input
-                  type="text"
-                  value={loginUsername}
-                  onChange={(e) => setLoginUsername(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-250 rounded-lg text-sm font-semibold"
-                  placeholder="admin หรือ user"
-                />
+                <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">{t('login.username')}</label>
+                <div className="relative">
+                  <User size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    value={loginUsername}
+                    onChange={(e) => setLoginUsername(e.target.value)}
+                    className="w-full pl-9 p-2.5 bg-gray-50 border border-gray-250 rounded-lg text-sm font-semibold"
+                    placeholder={t('login.usernamePlaceholder')}
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">รหัสผ่านลับ</label>
-                <input
-                  type="password"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-250 rounded-lg text-sm"
-                  placeholder="admin123 หรือ user123"
-                />
+                <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">{t('login.password')}</label>
+                <div className="relative">
+                  <Key size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="password"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full pl-9 p-2.5 bg-gray-50 border border-gray-250 rounded-lg text-sm"
+                    placeholder={t('login.passwordPlaceholder')}
+                  />
+                </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2.5 bg-brand-primary text-slate-900 font-bold rounded-lg text-xs tracking-wide uppercase shadow-md cursor-pointer hover:bg-brand-hover transition-colors"
+                className="w-full py-2.5 bg-brand-primary text-slate-900 font-bold rounded-lg text-xs tracking-wide uppercase shadow-md cursor-pointer hover:bg-brand-hover transition-colors flex items-center justify-center gap-2"
               >
-                เข้าสู่ระบบประเมินค่า
+                <LogIn size={15} />
+                {t('login.submit')}
               </button>
             </form>
 
             <div className="mt-5 pt-4 border-t border-gray-150 text-[11px] text-gray-400 text-center space-y-1">
-              <p>คำใบ้ผู้ใช้และวิศวกรเพื่อสลับระบบสิทธิ์:</p>
+              <p>{t('login.hint')}</p>
               <div className="flex justify-center gap-4">
                 <span>**Admin**: admin / admin123</span>
                 <span>**User**: user / user123</span>
@@ -354,13 +378,13 @@ export default function App() {
                 </div>
                 <div>
                   <h1 className="text-xs font-bold uppercase tracking-wider text-white">IT & AIS Manager</h1>
-                  <span className="text-[10px] text-gray-400">Enterprise v1.2</span>
+                  <span className="text-[10px] text-gray-400">{t('app.subtitle')}</span>
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={handleRefresh}
-                title="รีเฟรชข้อมูล"
+                title={t('app.refresh')}
                 disabled={isRefreshing}
                 className="p-1 hover:bg-slate-800 rounded text-gray-400 cursor-pointer disabled:opacity-40"
               >
@@ -375,8 +399,8 @@ export default function App() {
                   <Shield size={14} />
                 </div>
                 <div className="truncate text-left">
-                  <p className="text-[10px] text-gray-400 uppercase font-bold tracking-tight">บทบาทเข้าควบคุม</p>
-                  <p className="text-xs font-bold text-white capitalize">{currentUser.role === 'admin' ? 'ผู้บริหารสูงสุด (Admin)' : 'พนักงานอ่าน (User)'}</p>
+                  <p className="text-[10px] text-gray-400 uppercase font-bold tracking-tight">{t('role.label')}</p>
+                  <p className="text-xs font-bold text-white capitalize">{currentUser.role === 'admin' ? t('role.admin') : t('role.user')}</p>
                 </div>
               </div>
 
@@ -393,18 +417,19 @@ export default function App() {
                       loadAllData();
                     }
                   } catch (e) {
-                    alert('สลับสิทธิ์ขัดข้อง');
+                    alert(t('role.swapError'));
                   }
                 }}
-                className="text-[9px] bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-brand-primary hover:bg-slate-700 font-bold transition-all cursor-pointer"
+                className="text-[9px] bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-brand-primary hover:bg-slate-700 font-bold transition-all cursor-pointer flex items-center gap-1"
               >
-                สลับบทบาท
+                <Repeat size={10} />
+                {t('role.swap')}
               </button>
             </div>
 
             {/* Navigation items */}
             <nav className="flex-1 p-3 space-y-1">
-              <span className="text-[10px] font-bold text-slate-500 uppercase px-3 block mb-1 tracking-wider">แผงควบคุมหลัก</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase px-3 block mb-1 tracking-wider">{t('nav.sectionMain')}</span>
               
               <button
                 onClick={() => { setActiveTab('Dashboard'); setShowGlobalSearchResults(false); }}
@@ -413,7 +438,7 @@ export default function App() {
                 }`}
               >
                 <LayoutDashboard size={16} />
-                <span>แดชบอร์ดสรุป (Summary)</span>
+                <span>{t('nav.dashboard')}</span>
               </button>
 
               <button
@@ -423,7 +448,7 @@ export default function App() {
                 }`}
               >
                 <Smartphone size={16} />
-                <span>โทรศัพท์มือถือ (Assets)</span>
+                <span>{t('nav.assets')}</span>
               </button>
 
               <button
@@ -433,7 +458,7 @@ export default function App() {
                 }`}
               >
                 <FileText size={16} />
-                <span>ซิม & สัญญาบริการ (SIMs)</span>
+                <span>{t('nav.contracts')}</span>
               </button>
 
               <button
@@ -443,10 +468,10 @@ export default function App() {
                 }`}
               >
                 <UserCheck size={16} />
-                <span>บันทึกส่งมอบ/คืน (Handovers)</span>
+                <span>{t('nav.assignments')}</span>
               </button>
 
-              <span className="text-[10px] font-bold text-slate-500 uppercase px-3 block pt-4 mb-1 tracking-wider">พนักงาน & คลังประดับ</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase px-3 block pt-4 mb-1 tracking-wider">{t('nav.sectionPeople')}</span>
 
               <button
                 onClick={() => { setActiveTab('Employees'); setShowGlobalSearchResults(false); }}
@@ -455,7 +480,7 @@ export default function App() {
                 }`}
               >
                 <Users size={16} />
-                <span>ทะเบียนพนักงาน (Staff)</span>
+                <span>{t('nav.employees')}</span>
               </button>
 
               <button
@@ -465,7 +490,7 @@ export default function App() {
                 }`}
               >
                 <FolderOpen size={16} />
-                <span>ใบเสัญญาแนบ PDF (Files)</span>
+                <span>{t('nav.documents')}</span>
               </button>
 
               <button
@@ -475,21 +500,21 @@ export default function App() {
                 }`}
               >
                 <Clock size={16} />
-                <span>บันทึกกิจกรรม (Audit Log)</span>
+                <span>{t('nav.logs')}</span>
               </button>
             </nav>
 
             {/* Logout Footer Section */}
             <div className="p-4 border-t border-slate-800 bg-slate-950 flex flex-col gap-2">
               <div className="text-[10px] text-gray-500 text-center font-mono select-none">
-                สัญญาล่าสุดคำนวณ UTC
+                {t('footer.utcNote')}
               </div>
               <button
                 onClick={handleLogout}
                 className="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold text-xs rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-colors"
               >
                 <LogOut size={13} />
-                <span>ออกจากเซสชัน</span>
+                <span>{t('footer.logout')}</span>
               </button>
             </div>
 
@@ -505,12 +530,7 @@ export default function App() {
               <div className="hidden md:flex items-center gap-2">
                 <span className="text-gray-400">/</span>
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-                  {activeTab === 'Dashboard' ? 'ภาพรวมแดชบอร์ด' :
-                   activeTab === 'Assets' ? 'สารบรรณข้อมูลเครื่องโทรศัพท์' :
-                   activeTab === 'Contracts' ? 'การจัดการบัญชี SIM / คลื่นความถี่สัญญาลอย' :
-                   activeTab === 'Assignments' ? 'คลังเซ็นส่งคืนสัมภาระพนักงาน' :
-                   activeTab === 'Employees' ? 'ข้อมูลทีมงานบริษัท' :
-                   activeTab === 'Documents' ? 'แนบหลักฐาน PDF / ดรอปบุ๊ก' : 'ระบบตรวจสอบความมั่นคง Audit Log'}
+                  {t(`header.${activeTab}` as any)}
                 </span>
               </div>
 
@@ -525,7 +545,7 @@ export default function App() {
                     setShowGlobalSearchResults(!!e.target.value);
                   }}
                   onFocus={() => setShowGlobalSearchResults(!!globalSearchTerm)}
-                  placeholder="สืบค้นด่วน: IMEI, S/N, เบอร์ AIS หรือชื่อคน..."
+                  placeholder={t('header.searchPlaceholder')}
                   className="w-full pl-9 pr-8 py-1.5 border border-gray-200 rounded-lg text-xs font-medium focus:outline-none focus:border-brand-primary"
                 />
 
@@ -636,7 +656,7 @@ export default function App() {
 
               {/* Right widgets: UTC Date + Notifications popup */}
               <div className="flex items-center gap-4">
-                
+
                 {/* UTC clock */}
                 <div className="hidden lg:flex flex-col text-right font-mono text-[10px] text-gray-400 select-none">
                   <div className="font-semibold text-gray-650 flex items-center gap-1">
@@ -644,6 +664,16 @@ export default function App() {
                     <span>2026-06-09 07:53 UTC</span>
                   </div>
                 </div>
+
+                {/* Language toggle */}
+                <button
+                  onClick={toggleLang}
+                  title={t('lang.label')}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-600 hover:text-slate-800 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer transition-colors text-xs font-bold"
+                >
+                  <Globe size={15} />
+                  <span>{lang === 'th' ? 'EN' : 'ไทย'}</span>
+                </button>
 
                 {/* Alerts warning Bell with unread balloon */}
                 <div className="relative">
@@ -663,18 +693,19 @@ export default function App() {
                   {notifPanelOpen && (
                     <div className="absolute right-0 top-11 bg-white border border-gray-200 rounded-xl shadow-xl p-4 w-[340px] z-30 space-y-3">
                       <div className="flex justify-between items-center border-b pb-2">
-                        <h4 className="text-xs font-bold text-gray-800">การแจ้งเตือนสัญญาทั้งสิ้น ({notifications.filter(n => !n.isRead).length})</h4>
-                        <button 
+                        <h4 className="text-xs font-bold text-gray-800 flex items-center gap-1.5"><BellRing size={13} className="text-amber-500" />{t('notif.title')} ({notifications.filter(n => !n.isRead).length})</h4>
+                        <button
                           onClick={handleMarkAllNotifsRead}
-                          className="text-[10px] text-emerald-600 hover:underline font-bold cursor-pointer"
+                          className="text-[10px] text-emerald-600 hover:underline font-bold cursor-pointer flex items-center gap-1"
                         >
-                          อ่านทั้งหมด
+                          <CheckCheck size={12} />
+                          {t('notif.markAll')}
                         </button>
                       </div>
 
                       <div className="space-y-2 max-h-[220px] overflow-y-auto">
                         {notifications.length === 0 ? (
-                          <p className="text-[11px] text-gray-400 italic text-center py-4">ไม่มีรายการแจ้งเตือนสัญญากดดัน</p>
+                          <p className="text-[11px] text-gray-400 italic text-center py-4">{t('notif.empty')}</p>
                         ) : (
                           notifications.map(n => (
                             <div 
@@ -690,7 +721,7 @@ export default function App() {
                                     onClick={() => handleMarkNotifRead(n.id)}
                                     className="text-[9px] text-gray-500 underline font-semibold hover:text-gray-900 cursor-pointer"
                                   >
-                                    อ่าน
+                                    {t('notif.read')}
                                   </button>
                                 )}
                               </div>
@@ -705,7 +736,7 @@ export default function App() {
                           onClick={() => setNotifPanelOpen(false)}
                           className="text-xs bg-slate-905 bg-slate-900 hover:bg-slate-800 text-white font-bold p-1 px-4.5 rounded cursor-pointer"
                         >
-                          ปิดกล่อง
+                          {t('notif.close')}
                         </button>
                       </div>
                     </div>
@@ -722,8 +753,8 @@ export default function App() {
                 <div className="h-[400px] flex flex-col items-center justify-center text-center space-y-4">
                   <RefreshCw className="animate-spin text-brand-primary" size={40} />
                   <div>
-                    <h3 className="text-sm font-bold text-gray-800">กำลังแลกเปลี่ยนแพ็กเกจเสาสัญญาณ...</h3>
-                    <p className="text-xs text-gray-400 mt-1">เกลี่ยฐานข้อมูลเซิร์ฟเวอร์ AIS</p>
+                    <h3 className="text-sm font-bold text-gray-800">{t('loading.title')}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{t('loading.subtitle')}</p>
                   </div>
                 </div>
               ) : (
