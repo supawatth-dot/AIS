@@ -109,10 +109,13 @@ export default function AssetManagerView({
   // Open Form for Adding New Device
   const handleOpenAdd = () => {
     setIsEditMode(false);
-    // Generate incremental id like AST-XXXX dynamically based on count
-    const activeLength = assets.length;
-    const paddingId = String(activeLength + 1).padStart(4, '0');
-    setFormAssetId(`AST-${paddingId}`);
+    // Generate incremental id like BKK-PH-XXXX based on the highest existing BKK-PH number
+    const maxNum = assets.reduce((max, a) => {
+      const match = a.id.match(/^BKK-PH-(\d+)$/);
+      return match ? Math.max(max, parseInt(match[1], 10)) : max;
+    }, 0);
+    const paddingId = String(maxNum + 1).padStart(4, '0');
+    setFormAssetId(`BKK-PH-${paddingId}`);
     
     setFormName('');
     setFormBrand('');
@@ -237,7 +240,7 @@ export default function AssetManagerView({
   // Download import template
   const handleDownloadTemplate = () => {
     const headers = ['Asset ID', 'Name', 'Brand', 'Model', 'Serial Number', 'IMEI', 'Purchase Date (YYYY-MM-DD)', 'Price (THB)', 'Warranty Expiry (YYYY-MM-DD)', 'Asset Type', 'Status', 'Notes'];
-    const example = ['AST-0001', 'iPhone 15 Pro', 'Apple', 'A3290', 'SN1234567890', '358123456789012', '2024-01-15', '45000', '2025-01-15', 'Company Asset', 'Spare', 'ตัวอย่างข้อมูล'];
+    const example = ['BKK-PH-0001', 'iPhone 15 Pro', 'Apple', 'A3290', 'SN1234567890', '358123456789012', '2024-01-15', '45000', '2025-01-15', 'Company Asset', 'Spare', 'ตัวอย่างข้อมูล'];
     const notes = ['', '', '', '', '', '', '', '', '', 'Company Asset หรือ Contract Device', 'Active, Spare, Repair, Lost, Retired', ''];
     const csvContent = '﻿' + [headers, example, notes].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -808,7 +811,7 @@ export default function AssetManagerView({
                       disabled={isEditMode}
                       value={formAssetId}
                       onChange={(e) => setFormAssetId(e.target.value)}
-                      placeholder="e.g. AST-0005"
+                      placeholder="e.g. BKK-PH-0005"
                       className="w-full p-2 border border-gray-250 roundedL-md text-sm font-mono disabled:bg-gray-100"
                     />
                   </div>
