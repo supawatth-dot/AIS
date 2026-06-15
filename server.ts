@@ -122,6 +122,55 @@ app.put('/api/assets/:id', (req, res) => {
   }
 });
 
+app.post('/api/assets/bulk-import', (req, res) => {
+  try {
+    if (!sessionUser || sessionUser.role !== 'admin') {
+      return res.status(403).json({ error: 'เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่นำเข้าข้อมูลได้' });
+    }
+    const { rows } = req.body as { rows: any[] };
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ error: 'ไม่มีข้อมูลที่จะนำเข้า' });
+    }
+
+    const results: { success: number; failed: { row: number; id: string; error: string }[] } = { success: 0, failed: [] };
+    const validStatuses = ['Active', 'Spare', 'Repair', 'Lost', 'Retired'];
+    const validTypes = ['Company Asset', 'Contract Device'];
+
+    for (let i = 0; i < rows.length; i++) {
+      const r = rows[i];
+      try {
+        if (!r.id) throw new Error('ไม่มี Asset ID');
+        if (!r.name) throw new Error('ไม่มีชื่ออุปกรณ์');
+        if (!validTypes.includes(r.assetType)) throw new Error(`assetType ไม่ถูกต้อง (${r.assetType})`);
+        if (!validStatuses.includes(r.status)) throw new Error(`status ไม่ถูกต้อง (${r.status})`);
+
+        DBManager.createAsset({
+          id: r.id,
+          name: r.name,
+          brand: r.brand || '',
+          model: r.model || '',
+          serialNumber: r.serialNumber || '',
+          imei: r.imei || '',
+          purchaseDate: r.purchaseDate || new Date().toISOString().split('T')[0],
+          purchasePrice: parseFloat(r.purchasePrice) || 0,
+          warrantyExpiry: r.warrantyExpiry || new Date().toISOString().split('T')[0],
+          assetType: r.assetType,
+          status: r.status,
+          notes: r.notes || '',
+        });
+        results.success++;
+      } catch (err: any) {
+        results.failed.push({ row: i + 2, id: r.id || '-', error: err.message });
+      }
+    }
+
+    DBManager.addLog('Bulk Import Assets', `นำเข้าอุปกรณ์สำเร็จ ${results.success} รายการ, ล้มเหลว ${results.failed.length} รายการ`, sessionUser?.username || 'admin');
+    res.json(results);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 app.delete('/api/assets/:id', (req, res) => {
   try {
     if (!sessionUser || sessionUser.role !== 'admin') {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
-import { 
-  Plus, Search, Download, Trash2, Edit, QrCode, Clipboard, FileText, 
-  X, Info, Calendar, Sparkles, AlertCircle, Eye, Link, Image as ImageIcon 
+import {
+  Plus, Search, Download, Trash2, Edit, QrCode, Clipboard, FileText,
+  X, Info, Calendar, Sparkles, AlertCircle, Eye, Link, Image as ImageIcon,
+  Upload, FileSpreadsheet, CheckCircle
 } from 'lucide-react';
 import { Asset, AssetType, AssetStatus } from '../types';
 
@@ -60,6 +61,12 @@ export default function AssetManagerView({
   const [uploadFileType, setUploadFileType] = useState<'Invoice' | 'Device Photo' | 'Warranty File'>('Invoice');
   const [isUploading, setIsUploading] = useState(false);
   const [errorText, setErrorText] = useState('');
+
+  // Bulk import states
+  const [importModalOpen, setImportModalOpen] = useState(false);
+  const [importResult, setImportResult] = useState<{ success: number; failed: { row: number; id: string; error: string }[] } | null>(null);
+  const [importLoading, setImportLoading] = useState(false);
+  const [importError, setImportError] = useState('');
 
   // Handle scanned asset id Deep link in QR tags
   useEffect(() => {
@@ -227,6 +234,93 @@ export default function AssetManagerView({
     }
   };
 
+  // Download import template
+  const handleDownloadTemplate = () => {
+    const headers = ['Asset ID', 'Name', 'Brand', 'Model', 'Serial Number', 'IMEI', 'Purchase Date (YYYY-MM-DD)', 'Price (THB)', 'Warranty Expiry (YYYY-MM-DD)', 'Asset Type', 'Status', 'Notes'];
+    const example = ['AST-0001', 'iPhone 15 Pro', 'Apple', 'A3290', 'SN1234567890', '358123456789012', '2024-01-15', '45000', '2025-01-15', 'Company Asset', 'Spare', 'ตัวอย่างข้อมูล'];
+    const notes = ['', '', '', '', '', '', '', '', '', 'Company Asset หรือ Contract Device', 'Active, Spare, Repair, Lost, Retired', ''];
+    const csvContent = '﻿' + [headers, example, notes].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'AIS_Asset_Import_Template.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Handle CSV file upload for import
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImportError('');
+    setImportResult(null);
+    setImportLoading(true);
+
+    const text = await file.text();
+    const lines = text.replace(/^﻿/, '').split('\n').filter(l => l.trim());
+    if (lines.length < 2) {
+      setImportError('ไฟล์ไม่มีข้อมูล (ต้องมีอย่างน้อย 1 แถวข้อมูล นอกจาก header)');
+      setImportLoading(false);
+      return;
+    }
+
+    const parseCSVRow = (line: string) => {
+      const result: string[] = [];
+      let inQuote = false, cur = '';
+      for (const ch of line) {
+        if (ch === '"') { inQuote = !inQuote; }
+        else if (ch === ',' && !inQuote) { result.push(cur.trim()); cur = ''; }
+        else { cur += ch; }
+      }
+      result.push(cur.trim());
+      return result;
+    };
+
+    // Skip header row (index 0), and skip rows that look like the example notes row
+    const rows = lines.slice(1).map(line => {
+      const cols = parseCSVRow(line);
+      return {
+        id: cols[0] || '',
+        name: cols[1] || '',
+        brand: cols[2] || '',
+        model: cols[3] || '',
+        serialNumber: cols[4] || '',
+        imei: cols[5] || '',
+        purchaseDate: cols[6] || '',
+        purchasePrice: cols[7] || '0',
+        warrantyExpiry: cols[8] || '',
+        assetType: cols[9] || '',
+        status: cols[10] || '',
+        notes: cols[11] || '',
+      };
+    }).filter(r => r.id && r.id !== 'Asset ID' && r.assetType !== 'Company Asset หรือ Contract Device');
+
+    if (rows.length === 0) {
+      setImportError('ไม่พบข้อมูลที่ถูกต้องในไฟล์');
+      setImportLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/assets/bulk-import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'เกิดข้อผิดพลาด');
+      setImportResult(data);
+      if (data.success > 0) onRefresh();
+    } catch (err: any) {
+      setImportError(err.message);
+    } finally {
+      setImportLoading(false);
+      e.target.value = '';
+    }
+  };
+
   // CSV Export Utility
   const handleExportCSV = () => {
     const csvRows = [
@@ -290,7 +384,7 @@ export default function AssetManagerView({
         </div>
 
         {/* Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleExportCSV}
             className="flex items-center gap-2 py-2 px-3.5 border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
@@ -298,15 +392,36 @@ export default function AssetManagerView({
             <Download size={14} />
             <span>ส่งออกรายงาน (CSV)</span>
           </button>
-          
+
           {userRole === 'admin' && (
-            <button
-              onClick={handleOpenAdd}
-              className="flex items-center gap-1.5 py-2 px-4 bg-brand-primary text-slate-900 rounded-lg text-xs font-bold hover:bg-brand-hover transition-colors cursor-pointer"
-            >
-              <Plus size={16} />
-              <span>ลงทะเบียนเครื่องใหม่</span>
-            </button>
+            <>
+              <button
+                onClick={handleDownloadTemplate}
+                className="flex items-center gap-2 py-2 px-3.5 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
+              >
+                <FileSpreadsheet size={14} />
+                <span>ดาวน์โหลด Template</span>
+              </button>
+
+              <label className="flex items-center gap-2 py-2 px-3.5 border border-blue-200 rounded-lg text-xs font-semibold text-blue-700 hover:bg-blue-50 transition-colors cursor-pointer">
+                <Upload size={14} />
+                <span>นำเข้าข้อมูล (CSV)</span>
+                <input
+                  type="file"
+                  accept=".csv"
+                  className="hidden"
+                  onChange={(e) => { setImportModalOpen(true); handleImportFile(e); }}
+                />
+              </label>
+
+              <button
+                onClick={handleOpenAdd}
+                className="flex items-center gap-1.5 py-2 px-4 bg-brand-primary text-slate-900 rounded-lg text-xs font-bold hover:bg-brand-hover transition-colors cursor-pointer"
+              >
+                <Plus size={16} />
+                <span>ลงทะเบียนเครื่องใหม่</span>
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -854,6 +969,63 @@ export default function AssetManagerView({
               </div>
 
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Import Result Modal */}
+      {importModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-bold text-gray-900">นำเข้าข้อมูลอุปกรณ์</h2>
+              <button onClick={() => { setImportModalOpen(false); setImportResult(null); setImportError(''); }} className="text-gray-400 hover:text-gray-700 cursor-pointer">
+                <X size={20} />
+              </button>
+            </div>
+
+            {importLoading && (
+              <div className="flex flex-col items-center gap-3 py-8 text-gray-500">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <span className="text-sm">กำลังนำเข้าข้อมูล...</span>
+              </div>
+            )}
+
+            {importError && !importLoading && (
+              <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+                <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                <span>{importError}</span>
+              </div>
+            )}
+
+            {importResult && !importLoading && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700">
+                  <CheckCircle size={16} className="shrink-0" />
+                  <span>นำเข้าสำเร็จ <strong>{importResult.success}</strong> รายการ</span>
+                </div>
+                {importResult.failed.length > 0 && (
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-red-600">ล้มเหลว {importResult.failed.length} รายการ:</p>
+                    <div className="max-h-48 overflow-y-auto space-y-1">
+                      {importResult.failed.map((f, i) => (
+                        <div key={i} className="text-xs bg-red-50 border border-red-100 rounded px-2 py-1 text-red-700">
+                          แถว {f.row} (ID: {f.id}) — {f.error}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button
+              onClick={() => { setImportModalOpen(false); setImportResult(null); setImportError(''); }}
+              disabled={importLoading}
+              className="w-full py-2 bg-brand-primary text-slate-900 rounded-lg font-bold hover:bg-brand-hover cursor-pointer disabled:opacity-50"
+            >
+              ปิด
+            </button>
           </div>
         </div>
       )}
