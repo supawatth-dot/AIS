@@ -377,7 +377,7 @@ export default function App() {
                   AS
                 </div>
                 <div>
-                  <h1 className="text-xs font-bold uppercase tracking-wider text-white">IT & AIS Manager</h1>
+                  <h1 className="text-xs font-bold uppercase tracking-wider text-white">HAT AIS PHONE MANAGEMENT</h1>
                   <span className="text-[10px] text-gray-400">{t('app.subtitle')}</span>
                 </div>
               </div>
