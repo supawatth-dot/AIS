@@ -1,0 +1,305 @@
+{
+  "assets": [
+    {
+      "id": "AST-0001",
+      "name": "iPhone 15 Pro Max",
+      "brand": "Apple",
+      "model": "A3106 (256GB, Blue Titanium)",
+      "serialNumber": "QX9H8D4F7G",
+      "imei": "358921849204812",
+      "purchaseDate": "2025-08-19",
+      "purchasePrice": 48900,
+      "warrantyExpiry": "2026-08-19",
+      "assetType": "Contract Device",
+      "status": "Active",
+      "notes": "เครื่องติดสัญญารายเดือน AIS แพ็กเกจ VIP-5G",
+      "qrCode": "",
+      "isDeleted": false
+    },
+    {
+      "id": "AST-0002",
+      "name": "Samsung Galaxy S24 Ultra",
+      "brand": "Samsung",
+      "model": "SM-S928B/DS (512GB, Titanium Gray)",
+      "serialNumber": "R5CW301X9H",
+      "imei": "351429402941549",
+      "purchaseDate": "2026-02-15",
+      "purchasePrice": 46900,
+      "warrantyExpiry": "2027-02-15",
+      "assetType": "Company Asset",
+      "status": "Active",
+      "notes": "เครื่องกองกลางฝ่ายเขียนแบบ ซื้อขาดเป็นสินทรัพย์บริษัท",
+      "qrCode": "",
+      "isDeleted": false
+    },
+    {
+      "id": "AST-0003",
+      "name": "iPad Air 5 (Cellular)",
+      "brand": "Apple",
+      "model": "A2589 (64GB, Space Gray)",
+      "serialNumber": "GG7H3K8S9Q",
+      "imei": "357381940291048",
+      "purchaseDate": "2025-03-22",
+      "purchasePrice": 29900,
+      "warrantyExpiry": "2026-03-22",
+      "assetType": "Company Asset",
+      "status": "Spare",
+      "notes": "เครื่องสำรองไอทีพร้อมใช้ มีรอยบิ่นมุมล่างขวา",
+      "qrCode": "",
+      "isDeleted": false
+    },
+    {
+      "id": "AST-0004",
+      "name": "AIS Super 4G Pocket WiFi",
+      "brand": "ZTE",
+      "model": "MF971R",
+      "serialNumber": "ZTE8G3H19C",
+      "imei": "862048123951010",
+      "purchaseDate": "2025-11-27",
+      "purchasePrice": 1990,
+      "warrantyExpiry": "2026-11-27",
+      "assetType": "Contract Device",
+      "status": "Active",
+      "notes": "Pocket Wi-Fi สำหรับออกหน้างาน ตรวจสอบสัญญาซิม",
+      "qrCode": "",
+      "isDeleted": false
+    },
+    {
+      "id": "AST-0005",
+      "name": "Samsung Galaxy A55 5G",
+      "brand": "Samsung",
+      "model": "SM-A556B (128GB, Awesome Lilac)",
+      "serialNumber": "R5DW412A8B",
+      "imei": "352938102948194",
+      "purchaseDate": "2026-06-05",
+      "purchasePrice": 13999,
+      "warrantyExpiry": "2027-06-05",
+      "assetType": "Contract Device",
+      "status": "Spare",
+      "notes": "เครื่องสัญญาใหม่ รอส่งมอบให้พนักงานใหม่ทดลองงาน",
+      "qrCode": "",
+      "isDeleted": false
+    },
+    {
+      "id": "AST-0006",
+      "name": "iPhone 13",
+      "brand": "Apple",
+      "model": "A2633 (128GB, Midnight)",
+      "serialNumber": "X8F7R5P3V1",
+      "imei": "354918204910293",
+      "purchaseDate": "2024-05-26",
+      "purchasePrice": 25900,
+      "warrantyExpiry": "2025-05-26",
+      "assetType": "Company Asset",
+      "status": "Repair",
+      "notes": "หน้าจอแตก ส่งศูนย์ซ่อมประเมินราคาเมื่อวาน",
+      "qrCode": "",
+      "isDeleted": false
+    }
+  ],
+  "contracts": [
+    {
+      "phoneNumber": "0819238475",
+      "carrier": "AIS",
+      "contractNumber": "AIS-CON-2024-001",
+      "packageName": "AIS 5G Ultra Max Speed 1199",
+      "monthlyCost": 1199,
+      "contractStartDate": "2025-08-19",
+      "contractEndDate": "2026-08-19",
+      "contractStatus": "Active",
+      "aisAccountName": "บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด",
+      "linkedAssetId": "AST-0001",
+      "attachedDocId": "DOC-0001",
+      "isDeleted": false
+    },
+    {
+      "phoneNumber": "0891234567",
+      "carrier": "AIS",
+      "contractNumber": "AIS-CON-2025-002",
+      "packageName": "AIS Business 5G Flexi 899",
+      "monthlyCost": 899,
+      "contractStartDate": "2026-02-15",
+      "contractEndDate": "2027-02-15",
+      "contractStatus": "Active",
+      "aisAccountName": "บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด",
+      "linkedAssetId": "AST-0002",
+      "attachedDocId": null,
+      "isDeleted": false
+    },
+    {
+      "phoneNumber": "0937482910",
+      "carrier": "AIS",
+      "contractNumber": "AIS-CON-2024-003",
+      "packageName": "AIS Mobile Net Unlimited 599",
+      "monthlyCost": 599,
+      "contractStartDate": "2025-11-27",
+      "contractEndDate": "2026-05-26",
+      "contractStatus": "Expired",
+      "aisAccountName": "บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด",
+      "linkedAssetId": "AST-0004",
+      "attachedDocId": "DOC-0002",
+      "isDeleted": false
+    },
+    {
+      "phoneNumber": "0821122334",
+      "carrier": "AIS",
+      "contractNumber": "AIS-CON-2025-010",
+      "packageName": "AIS Net Extreme 1099",
+      "monthlyCost": 1099,
+      "contractStartDate": "2026-06-05",
+      "contractEndDate": "2027-06-05",
+      "contractStatus": "Active",
+      "aisAccountName": "บริษัท ทีแอนด์เอส เทเลคอม ดีไซน์ จำกัด",
+      "linkedAssetId": null,
+      "attachedDocId": null,
+      "isDeleted": false
+    }
+  ],
+  "employees": [
+    {
+      "id": "EMP-1001",
+      "name": "สมชาย รักดี",
+      "department": "Sales & Business",
+      "email": "somchai.r@company.com",
+      "isDeleted": false
+    },
+    {
+      "id": "EMP-1002",
+      "name": "วิภาดา รวยเจริญ",
+      "department": "Marketing Creative",
+      "email": "wiphada.r@company.com",
+      "isDeleted": false
+    },
+    {
+      "id": "EMP-1003",
+      "name": "ธีรเดช เอื้ออังกูร",
+      "department": "Engineering Outsource",
+      "email": "theeradech.a@company.com",
+      "isDeleted": false
+    },
+    {
+      "id": "EMP-1004",
+      "name": "อนันต์ สันติสุข",
+      "department": "IT Support",
+      "email": "anant.s@company.com",
+      "isDeleted": false
+    }
+  ],
+  "assignments": [
+    {
+      "id": "HIS-0001",
+      "employeeId": "EMP-1001",
+      "employeeName": "สมชาย รักดี",
+      "assetId": "AST-0001",
+      "assetName": "iPhone 15 Pro Max",
+      "phoneNumber": "0819238475",
+      "assignmentDate": "2025-08-19",
+      "returnDate": null,
+      "status": "Active",
+      "notes": "ส่งมอบเครื่องเพื่อใช้งานติดต่อลูกค้าฝ่ายขายพร้อมซิมรายเดือน"
+    },
+    {
+      "id": "HIS-0002",
+      "employeeId": "EMP-1002",
+      "employeeName": "วิภาดา รวยเจริญ",
+      "assetId": "AST-0002",
+      "assetName": "Samsung Galaxy S24 Ultra",
+      "phoneNumber": "0891234567",
+      "assignmentDate": "2026-02-15",
+      "returnDate": null,
+      "status": "Active",
+      "notes": "ส่งมอบเครื่องถ่ายภาพรีวิวสื่อและโซเชียลบริษัท"
+    },
+    {
+      "id": "HIS-0003",
+      "employeeId": "EMP-1003",
+      "employeeName": "ธีรเดช เอื้ออังกูร",
+      "assetId": "AST-0003",
+      "assetName": "iPad Air 5 (Cellular)",
+      "phoneNumber": null,
+      "assignmentDate": "2025-03-22",
+      "returnDate": "2026-06-05",
+      "status": "Returned",
+      "notes": "คืนเครื่องเนื่องจากหมดสัญญาจ้าง เอาท์ซอร์สวิศวกร ยืนยันเครื่องปกติดี"
+    },
+    {
+      "id": "HIS-0004",
+      "employeeId": "EMP-1003",
+      "employeeName": "ธีรเดช เอื้ออังกูร",
+      "assetId": "AST-0004",
+      "assetName": "AIS Super 4G Pocket WiFi",
+      "phoneNumber": "0937482910",
+      "assignmentDate": "2025-11-27",
+      "returnDate": null,
+      "status": "Active",
+      "notes": "พกพาเพื่อต่ออินเทอร์เน็ตหน้างานตรวจเสาสัญญาณ"
+    }
+  ],
+  "documents": [
+    {
+      "id": "DOC-0001",
+      "name": "สัญญาจดทะเบียนเบอร์ 081-923-8475.pdf",
+      "fileName": "0819238475_contract.pdf",
+      "fileType": "Contract",
+      "mimeType": "application/pdf",
+      "filePath": "/uploads/0819238475_contract.pdf",
+      "uploadedAt": "2025-08-19",
+      "fileSize": 1048576,
+      "linkedType": "contract",
+      "linkedId": "0819238475"
+    },
+    {
+      "id": "DOC-0002",
+      "name": "ใบเสร็จค่าใช้จ่าย AIS Pocket Wifi.pdf",
+      "fileName": "pocketcell_invoice.pdf",
+      "fileType": "Invoice",
+      "mimeType": "application/pdf",
+      "filePath": "/uploads/pocketcell_invoice.pdf",
+      "uploadedAt": "2025-11-27",
+      "fileSize": 450000,
+      "linkedType": "asset",
+      "linkedId": "AST-0004"
+    }
+  ],
+  "logs": [
+    {
+      "id": "LOG-0001",
+      "timestamp": "2026-06-15T13:30:07.165Z",
+      "action": "System Initialized",
+      "details": "ระบบฐานข้อมูล Telecom & Asset เริ่มต้นใช้งาน พร้อมข้อมูลตัวอย่าง",
+      "user": "admin"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "NOT-CNT-EXP-0937482910",
+      "type": "contract_expiry",
+      "title": "สัญญาหมดอายุแล้ว",
+      "message": "เบอร์โทรศัพท์ 0937482910 หมดอายุการใช้งานสัญญาตั้งแต่วันที่ 2026-05-26",
+      "severity": "danger",
+      "date": "2026-06-15T13:32:42.928Z",
+      "targetId": "0937482910",
+      "isRead": false
+    },
+    {
+      "id": "NOT-WAR-EXP-AST-0003",
+      "type": "warranty_expiry",
+      "title": "ประกันสินทรัพย์หมดอายุแล้ว",
+      "message": "ทรัพย์สิน AST-0003 (iPad Air 5 (Cellular)) หมดประกันเมื่อวันที 2026-03-22",
+      "severity": "info",
+      "date": "2026-06-15T13:32:42.928Z",
+      "targetId": "AST-0003",
+      "isRead": false
+    },
+    {
+      "id": "NOT-WAR-EXP-AST-0006",
+      "type": "warranty_expiry",
+      "title": "ประกันสินทรัพย์หมดอายุแล้ว",
+      "message": "ทรัพย์สิน AST-0006 (iPhone 13) หมดประกันเมื่อวันที 2025-05-26",
+      "severity": "info",
+      "date": "2026-06-15T13:32:42.928Z",
+      "targetId": "AST-0006",
+      "isRead": false
+    }
+  ]
+}
